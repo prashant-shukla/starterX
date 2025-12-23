@@ -1,0 +1,50 @@
+# Node
+node_modules/
+**/node_modules/
+/.pnp
+/.pnp.js
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+/.parcel-cache
+/.turbo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+
+# IDEs
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Lockfiles that shouldn't be in the repo
+package-lock.json
+yarn.lock
+
+# Misc
+.cache/
+coverage/
+/.nyc_output/
+
+# Dev API discovery file (runtime)
+web/.api_port
+.api_port
+.vercel
+server.pid
+
+# Upload artifacts (keep directory structure, ignore content)
+api/uploads/**/*
+!api/uploads/.gitkeep
