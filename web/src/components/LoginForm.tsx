@@ -85,7 +85,7 @@ export function LoginForm({ onLogin, onBackToHome }: LoginFormProps) {
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">Synoro</span>
+              <span className="text-2xl font-bold text-gray-900">starterX</span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-3">Welcome back</h1>
             <p className="text-gray-600">Access your accounting portal and financial insights</p>

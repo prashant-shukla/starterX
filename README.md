@@ -1,4 +1,4 @@
-# Full-Stack Boilerplate
+# starterX
 
 A clean, production-ready boilerplate with NestJS backend and React/Vite frontend.
 
@@ -17,7 +17,43 @@ A clean, production-ready boilerplate with NestJS backend and React/Vite fronten
 - PostgreSQL (or use Supabase/other hosted Postgres)
 - npm or yarn
 
-### 1. Backend Setup
+### Option 1: Web Installer (Recommended)
+
+The easiest way to set up the application is using the built-in web installer:
+
+1. **Start the backend:**
+   ```bash
+   cd api
+   npm install
+   
+   # Create .env file
+   cp .env.example .env
+   
+   # Edit .env with your database credentials
+   # DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+   # JWT_SECRET=your-secret-key
+   
+   npm run start:dev
+   ```
+
+2. **Start the frontend:**
+   ```bash
+   cd web
+   npm install
+   npm run dev
+   ```
+
+3. **Open the installer:**
+   - Navigate to `http://localhost:3000/setup`
+   - The installer will guide you through:
+     - Testing database connection
+     - Running database migrations
+     - Creating your admin user
+   - Once complete, you'll be redirected to the login page
+
+### Option 2: Manual Setup
+
+#### 1. Backend Setup
 
 ```bash
 cd api
@@ -42,7 +78,7 @@ npm run start:dev
 
 The API will start on port 4000 (or next available port). The port is written to `web/.api_port` for frontend discovery.
 
-### 2. Frontend Setup
+#### 2. Frontend Setup
 
 ```bash
 cd web
@@ -67,6 +103,42 @@ JWT_SECRET=your-secret-key-here
 PORT=4000
 QUIET_LOGS=false
 ```
+
+### Database Connection String
+
+**Important:** If your password contains special characters (like `@`, `#`, `%`, `:`, `/`, etc.), you must URL-encode them in the connection string.
+
+**Common special character encodings:**
+- `@` → `%40`
+- `#` → `%23`
+- `%` → `%25`
+- `:` → `%3A`
+- `/` → `%2F`
+- `?` → `%3F`
+- `&` → `%26`
+- `=` → `%3D`
+- `+` → `%2B`
+- ` ` (space) → `%20` or `+`
+
+**Examples:**
+
+```bash
+# Password: "myp@ss#word"
+DATABASE_URL=postgresql://postgres:myp%40ss%23word@localhost:5432/dbname
+
+# Password: "p@ssw:rd"
+DATABASE_URL=postgresql://postgres:p%40ssw%3Ard@localhost:5432/dbname
+
+# Password: "pass word" (with space)
+DATABASE_URL=postgresql://postgres:pass%20word@localhost:5432/dbname
+```
+
+**Quick encoding helper:** You can use Node.js to encode your password:
+```bash
+node -e "console.log(encodeURIComponent('your-password-here'))"
+```
+
+Or use an online URL encoder tool.
 
 ### Frontend
 
@@ -141,6 +213,13 @@ You can use these credentials to login and explore the dashboard.
 - `GET /users` - List users (protected)
 - `POST /users` - Create user (protected)
 
+### Setup/Installer
+
+- `GET /setup/status` - Get installation status
+- `GET /setup/test-database` - Test database connection
+- `POST /setup/run-migrations` - Run database migrations
+- `POST /setup/create-admin` - Create admin user
+
 ### Health
 
 - `GET /` - Health check
@@ -163,6 +242,19 @@ npm run migrate
 3. **JWT Tokens**: Tokens expire after 8 hours. The frontend automatically handles token refresh.
 
 4. **Swagger Docs**: Visit `http://localhost:4000/api-docs` when the API is running.
+
+5. **Web Installer**: Visit `http://localhost:3000/setup` to use the interactive installer for easy setup.
+
+## Recommended Features
+
+See [FEATURES.md](./FEATURES.md) for a comprehensive list of recommended features to add to make this starter template even more useful. This includes:
+
+- Email verification and password reset
+- Role-based access control (RBAC)
+- File upload enhancements
+- Testing setup
+- Docker support
+- And much more!
 
 ## Deployment
 

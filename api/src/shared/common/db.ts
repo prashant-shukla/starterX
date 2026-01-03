@@ -9,21 +9,51 @@ const isProd = process.env.NODE_ENV === 'production'
 
 function getConnectionString(): string {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabasePassword = process.env.SUPABASE_DB_PASSWORD || process.env.DATABASE_PASSWORD
+    // First, check if DATABASE_URL is explicitly set
     let connectionString = process.env.DATABASE_URL
-    if (!connectionString && supabaseUrl && supabasePassword) {
-      const urlObj = new URL(supabaseUrl)
-      const supabaseHost = urlObj.hostname
-      const projectRef = supabaseHost.split('.')[0]
-      connectionString = `postgresql://postgres:${encodeURIComponent(supabasePassword)}@db.${projectRef}.supabase.co:5432/postgres`
-      if (!isProd) console.log('Built DATABASE_URL from Supabase env vars')
-    }
+    
+    // If not set, try to build from Supabase env vars
     if (!connectionString) {
-      connectionString = 'postgres://postgres:postgres@localhost:5432/synoro'
-      if (!isProd) console.warn('Using fallback local DATABASE_URL')
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabasePassword = process.env.SUPABASE_DB_PASSWORD || process.env.DATABASE_PASSWORD
+      if (supabaseUrl && supabasePassword) {
+        try {
+          const urlObj = new URL(supabaseUrl)
+          const supabaseHost = urlObj.hostname
+          const projectRef = supabaseHost.split('.')[0]
+          // Build Supabase direct connection string
+          connectionString = `postgresql://postgres:${encodeURIComponent(supabasePassword)}@db.${projectRef}.supabase.co:5432/postgres`
+          if (!isProd) {
+            console.log('✅ Built DATABASE_URL from Supabase env vars')
+            console.log(`   Project: ${projectRef}`)
+            const masked = connectionString.replace(/:([^:@]+)@/, ':****@')
+            console.log(`   Connection: ${masked}`)
+          }
+        } catch (e: any) {
+          if (!isProd) {
+            console.error('❌ Failed to build Supabase connection string:', e.message)
+            console.error('   Supabase URL:', supabaseUrl)
+          }
+        }
+      } else {
+        if (!isProd && (supabaseUrl || supabasePassword)) {
+          console.warn('⚠️  Supabase URL or password missing. Need both NEXT_PUBLIC_SUPABASE_URL and SUPABASE_DB_PASSWORD')
+        }
+      }
     }
-    if (!isProd && connectionString && connectionString !== 'postgres://postgres:postgres@localhost:5432/synoro') {
+    
+    // Final fallback to local PostgreSQL
+    if (!connectionString) {
+      // Use 'postgres' as default database name (standard PostgreSQL default)
+      // Users should set DATABASE_URL in .env for their actual database
+      connectionString = 'postgres://postgres:postgres@localhost:5432/postgres'
+      if (!isProd) {
+        console.warn('⚠️  Using fallback local DATABASE_URL.')
+        console.warn('   Set DATABASE_URL in api/.env to connect to your actual database.')
+        console.warn('   Example: DATABASE_URL=postgresql://user:password@host:5432/dbname')
+      }
+    }
+    if (!isProd && connectionString && !connectionString.includes('localhost:5432/postgres')) {
       // Log connection info (mask password) for debugging
       const masked = connectionString.replace(/:([^:@]+)@/, ':****@')
       console.log('Using DATABASE_URL:', masked)
@@ -31,7 +61,7 @@ function getConnectionString(): string {
     return connectionString
   } catch (err: any) {
     console.error('Error building connection string:', err.message)
-    return 'postgres://postgres:postgres@localhost:5432/synoro'
+    return 'postgres://postgres:postgres@localhost:5432/postgres'
   }
 }
 

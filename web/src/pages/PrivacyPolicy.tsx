@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
       <p><strong>Last Updated:</strong> October 12, 2025</p>
 
       <h2>1. Introduction</h2>
-      <p>Synoro (“we,” “our,” or “us”) values your privacy. This Privacy Policy explains how we collect, use, store, and protect information when you use our platform and related services.</p>
+      <p>starterX ("we," "our," or "us") values your privacy. This Privacy Policy explains how we collect, use, store, and protect information when you use our platform and related services.</p>
 
       <h2>2. Information We Collect</h2>
       <p>We may collect the following types of data:</p>
@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
       <p>We use 256-bit encryption, SOC 2-compliant security standards, and role-based access controls to protect your data from unauthorized access, disclosure, or misuse.</p>
 
       <h2>6. Data Retention</h2>
-      <p>We retain your data only as long as necessary to provide services or meet legal obligations. You can request deletion of your data anytime by contacting <a href="mailto:support@synoro.com">support@synoro.com</a>.</p>
+      <p>We retain your data only as long as necessary to provide services or meet legal obligations. You can request deletion of your data anytime by contacting <a href="mailto:support@starterx.com">support@starterx.com</a>.</p>
 
       <h2>7. Your Rights</h2>
       <p>Depending on your location, you may have the right to:</p>
@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
       <p>We may update this Privacy Policy from time to time. The “Last Updated” date reflects the latest version. Continued use of our Services indicates acceptance of any updates.</p>
 
       <h2>11. Contact</h2>
-      <p>If you have questions about this policy or your data rights, please contact us at: <a href="mailto:privacy@synoro.com">privacy@synoro.com</a></p>
+      <p>If you have questions about this policy or your data rights, please contact us at: <a href="mailto:privacy@starterx.com">privacy@starterx.com</a></p>
     </main>
   )
 }

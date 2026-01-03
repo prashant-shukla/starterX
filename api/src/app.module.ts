@@ -4,6 +4,7 @@ import * as Joi from 'joi';
 import { AppController } from './health/app.controller';
 import { AuthController } from './auth/controllers/auth.controller';
 import { UsersController } from './auth/controllers/users.controller';
+import { SetupController } from './setup/setup.controller';
 import { jwtMiddleware } from './shared/common/jwt.middleware';
 
 @Module({
@@ -22,6 +23,7 @@ import { jwtMiddleware } from './shared/common/jwt.middleware';
     AppController,
     AuthController,
     UsersController,
+    SetupController,
   ],
   providers: [],
 })
@@ -29,7 +31,7 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(jwtMiddleware)
-      .exclude('/auth', '/')
+      .exclude('/auth', '/', '/setup')
       .forRoutes('*');
   }
 }

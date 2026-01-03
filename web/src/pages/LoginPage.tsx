@@ -39,10 +39,10 @@ export default function LoginPage() {
       
       // Determine user type and redirect
       const role = data.user?.user_metadata?.role;
-      const isAdmin = role === 'admin' || email.includes('admin@synoro.com');
-      const isManager = role === 'manager' || email.includes('manager@synoro.com');
+      const isAdmin = role === 'admin' || email.includes('admin@starterx.com');
+      const isManager = role === 'manager' || email.includes('manager@starterx.com');
       const isContractor = role === 'contractor' || role === 'bookkeeper' || 
-                          email.includes('contractor@synoro.com') || email.includes('bookkeeper');
+                          email.includes('contractor@starterx.com') || email.includes('bookkeeper');
       
       
       // Navigate to appropriate dashboard

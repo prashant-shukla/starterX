@@ -54,7 +54,7 @@ export function HomePage({ onLoginClick }: HomePageProps) {
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-2xl font-semibold text-gray-900">Full-Stack Boilerplate</span>
+              <span className="text-2xl font-semibold text-gray-900">starterX</span>
             </a>
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
@@ -103,7 +103,7 @@ export function HomePage({ onLoginClick }: HomePageProps) {
           <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Production-Ready{" "}
             <span className="text-blue-600">
-              Full-Stack Boilerplate
+              starterX
             </span>
           </h1>
           
@@ -408,7 +408,7 @@ export function HomePage({ onLoginClick }: HomePageProps) {
             <div>
               <div className="flex items-center justify-center md:justify-start space-x-2 mb-4">
                 <Sparkles className="w-6 h-6 text-blue-400" />
-                <span className="text-xl font-semibold">Full-Stack Boilerplate</span>
+                <span className="text-xl font-semibold">starterX</span>
               </div>
               <p className="text-gray-400 text-sm">
                 A production-ready starter template for building modern web applications.
@@ -435,7 +435,7 @@ export function HomePage({ onLoginClick }: HomePageProps) {
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; 2025 Full-Stack Boilerplate. All rights reserved.</p>
+            <p>&copy; 2025 starterX. All rights reserved.</p>
           </div>
         </div>
       </footer>

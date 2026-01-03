@@ -8,6 +8,7 @@ import { Toaster } from './components/shared/sonner';
 // Lazy load policy pages
 const Eula = React.lazy(() => import('./pages/Eula'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const SetupPage = React.lazy(() => import('./pages/SetupPage'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -22,7 +23,7 @@ function Dashboard() {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem('synoro_token');
+      const token = localStorage.getItem('starterx_token');
       await fetch('/auth/logout', {
         method: 'POST',
         headers: {
@@ -91,6 +92,14 @@ function AppRoutes() {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<HomePage />} />
+      <Route 
+        path="/setup" 
+        element={
+          <Suspense fallback={<LoadingFallback />}>
+            <SetupPage />
+          </Suspense>
+        } 
+      />
       <Route path="/login" element={<LoginPage />} />
       <Route 
         path="/eula" 

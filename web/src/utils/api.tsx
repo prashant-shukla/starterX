@@ -25,8 +25,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('synoro_token') : null
-      const u = typeof window !== 'undefined' ? localStorage.getItem('synoro_user') : null
+      const token = typeof window !== 'undefined' ? localStorage.getItem('starterx_token') : null
+      const u = typeof window !== 'undefined' ? localStorage.getItem('starterx_user') : null
 
 
       // Check if token is expired before setting it
@@ -72,16 +72,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setToken = (t: string | null) => {
     try {
-      if (t) localStorage.setItem('synoro_token', t)
-      else localStorage.removeItem('synoro_token')
+      if (t) localStorage.setItem('starterx_token', t)
+      else localStorage.removeItem('starterx_token')
     } catch (e) {}
     setAccessToken(t)
   }
 
   const setUser = (u: any | null) => {
     try {
-      if (u) localStorage.setItem('synoro_user', JSON.stringify(u))
-      else localStorage.removeItem('synoro_user')
+      if (u) localStorage.setItem('starterx_user', JSON.stringify(u))
+      else localStorage.removeItem('starterx_user')
     } catch (e) {}
     setUserState(u)
   }
@@ -127,8 +127,8 @@ export function isTokenExpired(token: string): boolean {
 export function clearAuthAndRedirect() {
   try {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('synoro_token')
-      localStorage.removeItem('synoro_user')
+      localStorage.removeItem('starterx_token')
+      localStorage.removeItem('starterx_user')
 
       // Show a toast notification if available
       try {
@@ -292,7 +292,7 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
       // If no token in request, check localStorage
       if (!token && typeof window !== 'undefined') {
         try {
-          token = localStorage.getItem('synoro_token')
+          token = localStorage.getItem('starterx_token')
         } catch (e) {
           // Ignore localStorage errors
         }

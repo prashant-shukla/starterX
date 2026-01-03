@@ -55,8 +55,26 @@ export class AuthController {
       if (/password authentication failed/i.test(msg)) {
         return res.status(503).json({ error: 'Database auth failed', code: 'DB_AUTH_FAILED' })
       }
-      if (/getaddrinfo ENOTFOUND|ECONNREFUSED|timeout|remaining connection slots/i.test(msg)) {
-        return res.status(503).json({ error: 'Database unreachable', code: 'DB_UNREACHABLE' })
+      if (/getaddrinfo ENOTFOUND|ECONNREFUSED|timeout|remaining connection slots|connect ECONNREFUSED/i.test(msg)) {
+        // Check what connection method is being used
+        const hasDatabaseUrl = process.env.DATABASE_URL && process.env.DATABASE_URL.trim() !== '';
+        const hasSupabaseVars = process.env.NEXT_PUBLIC_SUPABASE_URL && 
+                                (process.env.SUPABASE_DB_PASSWORD || process.env.DATABASE_PASSWORD);
+        
+        let errorMsg = 'Database unreachable. ';
+        if (hasDatabaseUrl) {
+          errorMsg += 'Check your DATABASE_URL connection string and ensure the database server is running.';
+        } else if (hasSupabaseVars) {
+          errorMsg += 'Supabase credentials are configured but connection failed. Check your Supabase project status and credentials.';
+        } else {
+          errorMsg += 'Please configure DATABASE_URL in api/.env or set up Supabase credentials (NEXT_PUBLIC_SUPABASE_URL and SUPABASE_DB_PASSWORD).';
+        }
+        
+        return res.status(503).json({ 
+          error: errorMsg, 
+          code: 'DB_UNREACHABLE',
+          details: process.env.NODE_ENV === 'development' ? msg : undefined
+        })
       }
       return res.status(500).json({ error: 'Internal login error', code: 'LOGIN_DB_ERROR' })
     }
@@ -77,7 +95,7 @@ export class AuthController {
   @ApiResponse({ status: 500, description: 'Server error' })
   async setupAdmin(@Res() res: Response) {
     // Create or upsert a demo admin user. Uses env vars or defaults. Intended for local/demo use only.
-    const email = process.env.ADMIN_EMAIL || 'admin@synoro.com'
+    const email = process.env.ADMIN_EMAIL || 'admin@starterx.com'
     const username = process.env.ADMIN_USERNAME || 'admin'
     const password = process.env.ADMIN_PASSWORD || 'admin123'
     const first = process.env.ADMIN_FIRST || 'Admin'

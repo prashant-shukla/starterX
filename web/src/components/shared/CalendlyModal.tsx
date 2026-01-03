@@ -12,7 +12,7 @@ export function CalendlyModal({ open, onOpenChange }: { open: boolean; onOpenCha
         >
           <Dialog.DialogTitle className="text-lg font-semibold mt-6 mb-2 text-center">Book Free Consultation</Dialog.DialogTitle>
           <iframe
-            src="https://calendly.com/synoro-ai/30min"
+            src="https://calendly.com/starterx/30min"
             title="Calendly Scheduling"
             className="w-full flex-1 border-0 rounded-b-2xl"
             allow="camera; microphone;"
