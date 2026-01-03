@@ -36,16 +36,31 @@ export class AuthController {
       return res.status(500).json({ error: 'Server misconfiguration: JWT secret missing' })
     }
     try {
-      const result = await query('SELECT id, email, password_hash, role, first_name, last_name FROM users WHERE email = $1 LIMIT 1', [email])
+      const result = await query('SELECT id, email, password_hash, role, first_name, last_name, tenant_id FROM users WHERE email = $1 LIMIT 1', [email])
       const row = result.rows[0]
       if (!row) return res.status(401).json({ error: 'Invalid credentials' })
 
       const ok = await bcrypt.compare(password, row.password_hash || '')
       if (!ok) return res.status(401).json({ error: 'Invalid credentials' })
 
-      const userMetadata = { role: row.role }
-      const token = jwt.sign({ sub: row.id, email: row.email, role: row.role }, JWT_SECRET, { expiresIn: '8h' })
-      return res.json({ access_token: token, user: { id: row.id, email: row.email, first_name: row.first_name, last_name: row.last_name, user_metadata: userMetadata } })
+      const userMetadata = { role: row.role, tenant_id: row.tenant_id }
+      const token = jwt.sign({ 
+        sub: row.id, 
+        email: row.email, 
+        role: row.role,
+        tenant_id: row.tenant_id 
+      }, JWT_SECRET, { expiresIn: '8h' })
+      return res.json({ 
+        access_token: token, 
+        user: { 
+          id: row.id, 
+          email: row.email, 
+          first_name: row.first_name, 
+          last_name: row.last_name,
+          tenant_id: row.tenant_id,
+          user_metadata: userMetadata 
+        } 
+      })
     } catch (err: any) {
       const msg = err?.message || ''
       // Common Postgres errors
@@ -100,7 +115,7 @@ export class AuthController {
     const password = process.env.ADMIN_PASSWORD || 'admin123'
     const first = process.env.ADMIN_FIRST || 'Admin'
     const last = process.env.ADMIN_LAST || 'User'
-    const role = process.env.ADMIN_ROLE || 'admin'
+    const role = process.env.ADMIN_ROLE || 'super_admin'
 
     const hash = await bcrypt.hash(password, 10)
     const sql = `

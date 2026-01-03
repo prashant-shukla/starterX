@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as express from 'express';
 import * as path from 'path';
+import { jwtMiddleware } from './shared/common/jwt.middleware';
 
 async function bootstrap() {
   const quiet = process.env.QUIET_LOGS === 'true';
@@ -37,6 +38,11 @@ async function bootstrap() {
   const server = app.getHttpAdapter().getInstance();
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
+  
+  // Apply JWT middleware globally via Express (before NestJS routing)
+  // This ensures it runs for all routes and req.auth is properly set
+  // The middleware will handle public routes internally
+  server.use(jwtMiddleware);
 
   // Serve uploaded files from /uploads
   const uploadsDir = path.join(process.cwd(), 'uploads');

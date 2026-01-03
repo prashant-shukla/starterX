@@ -55,7 +55,7 @@ export class SetupController {
           const result = await query(`
             SELECT COUNT(*) as count 
             FROM users 
-            WHERE LOWER(TRIM(role)) IN ('admin', 'superadmin', 'administrator')
+            WHERE LOWER(TRIM(role)) IN ('admin', 'super_admin', 'superadmin', 'administrator')
           `);
           status.adminUser = parseInt(result.rows[0]?.count || '0', 10) > 0;
           // Only show admin user error if migrations have run (meaning setup is in progress)
@@ -184,10 +184,10 @@ export class SetupController {
       const bcrypt = require('bcryptjs');
       const hash = await bcrypt.hash(password, 10);
 
-      // Create admin user
+      // Create super_admin user (first user is always super_admin)
       const result = await query(
         `INSERT INTO users (id, first_name, last_name, email, password_hash, role, created_at, updated_at)
-         VALUES (gen_random_uuid(), $1, $2, $3, $4, 'admin', now(), now())
+         VALUES (gen_random_uuid(), $1, $2, $3, $4, 'super_admin', now(), now())
          RETURNING id, email, first_name, last_name, role`,
         [firstName, lastName, email, hash]
       );

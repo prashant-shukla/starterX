@@ -8,6 +8,7 @@
     "build": "tsc -p tsconfig.build.json",
     "migrate": "ts-node ./scripts/run-migrations.ts",
     "create-demo-user": "ts-node ./scripts/create-demo-user.ts",
+    "create-demo-users": "ts-node ./scripts/create-demo-users.ts",
     "test": "jest --runInBand --detectOpenHandles --forceExit"
   },
   "dependencies": {
